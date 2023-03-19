@@ -22,6 +22,11 @@ public class Hammurabi {
     int plagueLosses;
     int starvationLosses;
     int planted;
+    int totalStarvations = 0;
+    boolean ratFlag = false;
+    boolean plagueFlag = false;
+
+
 
 
     public static void main(String[] args) {
@@ -29,9 +34,11 @@ public class Hammurabi {
     }
 
     public void startGame() {
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             year = i;
             bought = false;
+            ratFlag = false;
+            plagueFlag = false;
             startOfYear();
             acres += askHowManyAcresToBuy(landValue, grain);
             if(bought){
@@ -49,6 +56,7 @@ public class Hammurabi {
                 break;
             }
             localPopulation-=starvationLosses;
+            totalStarvations+=starvationLosses;
             if(starvationLosses == 0){
                 immigrantAmount = immigrants(localPopulation, acres, grain);
             }else{
@@ -59,9 +67,9 @@ public class Hammurabi {
             grain -= grainEatenByRats(grain);
             landValue = newCostOfLand();
             grain += harvest;
-
+            printSummary();
         }
-        print("\n\nThank you for playing");
+        finalSummary();
     }
 
 
@@ -201,6 +209,26 @@ public class Hammurabi {
         print("History will forget you");
     }
 
+    public void printSummary(){
+        System.out.println();
+        print("This year");
+        print((plagueLosses + starvationLosses) + " people died");
+        print(harvest + " bushels of grain were harvested");
+        if(plagueFlag){
+            print("A plague terrorized your city");
+        }
+        if(ratFlag){
+            print("An infestation of rats ate some of your store");
+        }
+    }
+
+    public void finalSummary(){
+        print("You finished your reign with");
+        print("A population of: " + localPopulation);
+        print("And a city with " + acres + " acres of land");
+        print("You let " + totalStarvations + " starve to death");
+        print("\n\nThank you for playing");
+    }
 
     public int input(){
         int value;
@@ -222,10 +250,10 @@ public class Hammurabi {
     void print(String sentence){
         String[] workedSentence = sentence.split("");
         try {
-            Thread.sleep(1);
+            Thread.sleep(250);
             for(String letter: workedSentence){
                 System.out.print(letter);
-                //Thread.sleep(22); //this makes it look really nice in a terminal, not so nice in an ide
+                Thread.sleep(22); //this makes it look really nice in a terminal, not so nice in an ide
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
