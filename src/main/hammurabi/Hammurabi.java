@@ -25,6 +25,7 @@ public class Hammurabi {
     int totalStarvations = 0;
     boolean ratFlag = false;
     boolean plagueFlag = false;
+    boolean gameOver = false;
 
 
 
@@ -69,7 +70,10 @@ public class Hammurabi {
             grain += harvest;
             printSummary();
         }
-        finalSummary();
+        if(gameOver){
+            finalSummary();
+        }
+
     }
 
 
@@ -205,6 +209,7 @@ public class Hammurabi {
     }
 
     public void gameOver(){
+        gameOver = true;
         print("You failed as a king Hammurabi.");
         print("History will forget you");
     }
